@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Giriş Yap - DietCok</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="auth-page">
+
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1 style="margin-bottom: 10px;"><span style="color: #28a745;">Diet</span><span
+                    style="color: #dc3545;">Cok</span> <span style="color: #28a745; font-size: 0.8em;">▼</span><span
+                    style="color: #dc3545; font-size: 0.8em;">▲</span></h1>
+            <h2>Hoş Geldiniz</h2>
+            <p>Devam etmek için giriş yapınız</p>
+        </div>
+
+        <div th:if="${param.error}" class="error"
+            style="color:red; margin-bottom:15px; background:#ffebeb; padding:10px; border-radius:5px;">
+            ⚠️ Kullanıcı adı veya şifre hatalı.
+        </div>
+        <div th:if="${param.logout}" class="success"
+            style="color:green; margin-bottom:15px; background:#eaffea; padding:10px; border-radius:5px;">
+            👋 Başarıyla çıkış yaptınız.
+        </div>
+
+        <form th:action="@{/login}" method="post" style="text-align:left;">
+            <div class="form-group">
+                <label>Kullanıcı Adı</label>
+                <input type="text" name="username" class="form-control" placeholder="Kullanıcı adınızı girin"
+                    required />
+            </div>
+
+            <div class="form-group">
+                <label>Şifre</label>
+                <input type="password" name="password" class="form-control" placeholder="Şifrenizi girin" required />
+            </div>
+
+            <button type="submit" class="auth-btn">Giriş Yap</button>
+        </form>
+
+        <div class="auth-footer">
+            Hesabınız yok mu? <a th:href="@{/register}">Kayıt Ol</a>
+        </div>
+    </div>
+
+</body>
+
+</html>

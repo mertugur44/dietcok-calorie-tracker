@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Profil Ayarları - DietCok</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <h1><span style="color: #28a745;">Diet</span><span style="color: #dc3545;">Cok</span> <span
+                    style="color: #28a745; font-size: 0.8em;">▼</span><span
+                    style="color: #dc3545; font-size: 0.8em;">▲</span></h1>
+            <nav>
+                <a th:href="@{/dashboard}">Ana Sayfa</a>
+                <a th:href="@{/profile}">Profil</a>
+                <form th:action="@{/logout}" method="post" class="logout-form"><button type="submit" class="btn-logout">Çıkış Yap</button></form>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div style="margin-bottom: 20px;">
+            <a href="/dashboard" class="back-btn" title="Geri Dön">&larr;</a>
+        </div>
+
+        <div class="auth-card" style="margin: 0 auto; max-width: 500px; text-align: left;">
+            <div class="auth-header" style="text-align: center;">
+                <h2>Profil Ayarları</h2>
+                <p>Hedeflerinizi güncelleyin</p>
+            </div>
+
+
+            <div th:if="${success}" class="success" th:text="${success}"></div>
+            <div th:if="${error}" class="error" th:text="${error}"></div>
+
+            <form th:action="@{/profile/update-goal}" method="post">
+                <div class="form-group">
+                    <label>Kullanıcı Adı</label>
+                    <input type="text" th:value="${user.username}" class="form-control" disabled
+                        style="background-color: #e9ecef;" />
+                    <small style="color:#aaa;">Kullanıcı adı değiştirilemez.</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Günlük Hedef Kalori (kcal)</label>
+                    <input type="number" name="dailyCalorieGoal" th:value="${user.dailyCalorieGoal}"
+                        class="form-control" min="1" max="10000" required />
+                    <small style="color: #28a745; font-weight: bold;">Bu değeri değiştirirseniz, takvimdeki renkler buna
+                        göre yeniden hesaplanır.</small>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 15px;">
+                    <div class="form-group">
+                        <label>Protein (g)</label>
+                        <input type="number" name="dailyProteinGoal" th:value="${user.dailyProteinGoal}"
+                            class="form-control" min="0" max="1000" placeholder="Örn: 150" />
+                    </div>
+                    <div class="form-group">
+                        <label>Karbonhidrat (g)</label>
+                        <input type="number" name="dailyCarbGoal" th:value="${user.dailyCarbGoal}" class="form-control" min="0" max="1000"
+                            placeholder="Örn: 200" />
+                    </div>
+                    <div class="form-group">
+                        <label>Yağ (g)</label>
+                        <input type="number" name="dailyFatGoal" th:value="${user.dailyFatGoal}" class="form-control" min="0" max="1000"
+                            placeholder="Örn: 70" />
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-btn" style="margin-top: 20px;">Kaydet</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

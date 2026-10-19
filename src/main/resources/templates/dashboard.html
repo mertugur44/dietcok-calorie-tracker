@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - DietCok</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <h1><span style="color: #28a745;">Diet</span><span style="color: #dc3545;">Cok</span> <span
+                    style="color: #28a745; font-size: 0.8em;">▼</span><span
+                    style="color: #dc3545; font-size: 0.8em;">▲</span></h1>
+            <nav>
+                <a th:href="@{/dashboard}">Ana Sayfa</a>
+                <a th:href="@{/profile}">Profil</a>
+                <form th:action="@{/logout}" method="post" class="logout-form"><button type="submit" class="btn-logout">Çıkış Yap</button></form>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <div class="dashboard-header">
+            <h2>Genel Bakış</h2>
+            <div class="month-nav">
+                <a th:href="@{/dashboard(year=${prevYear}, month=${prevMonth})}">&laquo; Önceki</a>
+                <span style="margin: 0 15px; font-weight:bold; font-size:1.2em;"
+                    th:text="${currentMonthName} + ' ' + ${currentYear}">OCAK 2026</span>
+                <a th:href="@{/dashboard(year=${nextYear}, month=${nextMonth})}">Sonraki &raquo;</a>
+            </div>
+        </div>
+
+        <p style="margin-bottom: 20px; font-size: 1.1em;">Hoş geldin, <strong th:text="${username}">Kullanıcı</strong>!
+            İşte aylık özetin.</p>
+
+        <div class="calendar-wrapper">
+            <table class="calendar-table">
+                <thead>
+                    <tr>
+                        <th>Pzt</th>
+                        <th>Sal</th>
+                        <th>Çar</th>
+                        <th>Per</th>
+                        <th>Cum</th>
+                        <th>Cmt</th>
+                        <th>Paz</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="week : ${weeks}">
+                        <td th:each="day : ${week}" th:class="${day == null} ? 'empty' : 'day-cell'"
+                            th:classappend="${day != null} ? ${day.status} : ''">
+
+                            <a th:if="${day != null}" th:href="@{/day/{date}(date=${day.date})}"
+                                style="display:flex; flex-direction:column; justify-content:space-between; height:100%; text-decoration:none; color:inherit; padding:10px;">
+
+                                <div class="day-number" th:text="${day.day}">1</div>
+
+                                <div th:if="${day.status != 'no-data'}"
+                                    style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; font-size:0.8em; color:#4a5568; line-height:1.4;">
+                                    <div>
+                                        Pro: <span th:text="${#numbers.formatDecimal(day.protein, 1, 0)}"></span>g
+                                        <span th:if="${user.dailyProteinGoal != null}">
+                                            <span th:if="${day.protein > user.dailyProteinGoal}"
+                                                style="color:#dc3545; font-weight:bold; font-size: 1.1em;">▲</span>
+                                            <span th:if="${day.protein <= user.dailyProteinGoal}"
+                                                style="color:#28a745; font-weight:bold; font-size: 1.1em;">▼</span>
+                                        </span>
+                                    </div>
+
+                                    <div>
+                                        Kar: <span th:text="${#numbers.formatDecimal(day.carbs, 1, 0)}"></span>g
+                                        <span th:if="${user.dailyCarbGoal != null}">
+                                            <span th:if="${day.carbs > user.dailyCarbGoal}"
+                                                style="color:#dc3545; font-weight:bold; font-size: 1.1em;">▲</span>
+                                            <span th:if="${day.carbs <= user.dailyCarbGoal}"
+                                                style="color:#28a745; font-weight:bold; font-size: 1.1em;">▼</span>
+                                        </span>
+                                    </div>
+
+                                    <div>
+                                        Yağ: <span th:text="${#numbers.formatDecimal(day.fat, 1, 0)}"></span>g
+                                        <span th:if="${user.dailyFatGoal != null}">
+                                            <span th:if="${day.fat > user.dailyFatGoal}"
+                                                style="color:#dc3545; font-weight:bold; font-size: 1.1em;">▲</span>
+                                            <span th:if="${day.fat <= user.dailyFatGoal}"
+                                                style="color:#28a745; font-weight:bold; font-size: 1.1em;">▼</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="status-indicator">
+                                    <div style="font-weight:bold; margin-top:5px;">
+                                        <span th:if="${day.status == 'over-limit'}">⚠️ <span
+                                                th:text="${day.totalCalories}"></span> kcal</span>
+                                        <span th:if="${day.status == 'under-limit'}"
+                                            th:text="${day.totalCalories} + ' kcal'"></span>
+                                    </div>
+                                    <span th:if="${day.status == 'no-data'}">-</span>
+                                </div>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+
+</html>

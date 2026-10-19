@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Kayıt Ol - DietCok</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="auth-page">
+
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1 style="margin-bottom: 10px;"><span style="color: #28a745;">Diet</span><span
+                    style="color: #dc3545;">Cok</span> <span style="color: #28a745; font-size: 0.8em;">▼</span><span
+                    style="color: #dc3545; font-size: 0.8em;">▲</span></h1>
+            <h2>Hesap Oluştur</h2>
+            <p>Sağlıklı yaşam yolculuğuna başla</p>
+        </div>
+
+        <div th:if="${error}" class="error" th:text="${error}" style="margin-bottom:20px; color:red;"></div>
+
+        <form th:action="@{/register}" th:object="${user}" method="post" style="text-align:left;">
+            <div class="form-group">
+                <label>Kullanıcı Adı</label>
+                <input type="text" th:field="*{username}" class="form-control" placeholder="Benzersiz bir isim seçin"
+                    minlength="3" maxlength="50" required />
+            </div>
+
+            <div class="form-group">
+                <label>Şifre</label>
+                <input type="password" th:field="*{password}" class="form-control" placeholder="Güçlü bir şifre girin"
+                    minlength="6" maxlength="72" required />
+            </div>
+
+            <div class="form-group">
+                <label>Günlük Hedef Kalori</label>
+                <input type="number" th:field="*{dailyCalorieGoal}" value="2000" class="form-control" min="1" max="10000" required />
+                <small style="color:#aaa;">Önerilen: 2000-2500 kcal</small>
+            </div>
+
+            <button type="submit" class="auth-btn">Kayıt Ol &rarr;</button>
+        </form>
+
+        <div class="auth-footer">
+            Zaten hesabın var mı? <a th:href="@{/login}">Giriş Yap</a>
+        </div>
+    </div>
+
+</body>
+
+</html>
