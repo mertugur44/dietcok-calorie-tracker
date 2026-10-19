@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +61,11 @@ public class ConsumptionService {
 
     public List<Consumption> getDailyConsumptions(String username, LocalDate date) {
         User user = userService.findByUsername(username);
-        List<Consumption> consumptions = consumptionRepository.findByUserAndDate(user, date);
+
+        List<Consumption> consumptions = new ArrayList<>(
+                consumptionRepository.findByUserAndDate(user, date)
+        );
+
         consumptions.sort(Comparator.comparing(Consumption::getMealType));
         return consumptions;
     }
@@ -116,6 +121,7 @@ public class ConsumptionService {
             dayStats.merge("fat", fat, (a, b) -> (double) a + (double) b);
             dayStats.merge("calories", calories, (a, b) -> (int) a + (int) b);
         }
+
         return stats;
     }
 
@@ -123,9 +129,11 @@ public class ConsumptionService {
         if (date == null || date.isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("Gelecek tarih için tüketim kaydı eklenemez.");
         }
+
         if (mealType == null) {
             throw new IllegalArgumentException("Öğün tipi seçilmelidir.");
         }
+
         if (amount == null || !Double.isFinite(amount) || amount <= 0) {
             throw new IllegalArgumentException("Miktar 0'dan büyük olmalıdır.");
         }
