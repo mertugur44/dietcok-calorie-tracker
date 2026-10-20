@@ -162,6 +162,12 @@ Selenium testi gerçek bir tarayıcı kullandığı için standart test çalış
 ./mvnw -De2e=true -Dtest=SeleniumE2ETest test
 ```
 
+## Proje Raporu
+
+Projenin test süreci, kullanılan test yaklaşımları ve sonuçları detaylı olarak proje raporunda yer almaktadır.
+
+[DietCok Test Raporunu Görüntüle](./DietCok_Test_Raporu.pdf)
+
 ## Katkıda Bulunanlar
 
 - Mert Uğur
